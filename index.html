@@ -97,7 +97,7 @@
       z-index: 2;
       width: 100%;
       max-width: 620px;
-      padding: 40px 28px;
+      padding: 40px 28px 60px;
       text-align: center;
     }
 
@@ -375,6 +375,25 @@
       margin-left: 20px;
     }
 
+    /* --- Direct ticket link (appears on every phase) --- */
+    .direct-link {
+      margin-top: 32px;
+      text-align: center;
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 12px;
+      letter-spacing: 0.5px;
+    }
+
+    .direct-link a {
+      color: var(--text-dim);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .direct-link a:hover {
+      color: var(--text-mid);
+    }
+
     /* --- Responsive --- */
     @media (max-width: 520px) {
       .container {
@@ -413,6 +432,7 @@
       <p class="event-theme">An inquiry into power, obedience, and the erosion of thought</p>
       <p class="event-meta">Melbourne &nbsp;·&nbsp; March 2026 &nbsp;·&nbsp; 40 seats</p>
       <button class="enter-btn" onclick="goToReflection()">Enter</button>
+      <div class="direct-link"><a href="https://humanitix.com/au/YOUR-EVENT-SLUG" target="_blank">or go directly to tickets →</a></div>
     </div>
 
     <!-- PHASE 2: Reflection -->
@@ -431,6 +451,7 @@
         <button class="continue-btn" id="continueBtn" onclick="goToPassage()">Continue</button>
         <button class="skip-link" onclick="goToPassage(true)">skip this step</button>
       </div>
+      <div class="direct-link"><a href="https://humanitix.com/au/YOUR-EVENT-SLUG" target="_blank">or go directly to tickets →</a></div>
     </div>
 
     <!-- PHASE 3: Passage to tickets -->
@@ -597,6 +618,18 @@
         // if the storage doesn't work
       });
     }
+
+    // =============================================
+    // INITIALISE — set all links from CONFIG
+    // =============================================
+    (function init() {
+      // Update all direct ticket links
+      document.querySelectorAll('.direct-link a').forEach(function(el) {
+        el.href = CONFIG.humanitixUrl;
+      });
+      // Update the main ticket button
+      document.getElementById('ticketLink').href = CONFIG.humanitixUrl;
+    })();
   </script>
 
 </body>
