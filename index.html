@@ -375,6 +375,56 @@
       margin-left: 20px;
     }
 
+    /* --- Rotating logo --- */
+    .logo-footer {
+      margin-top: 48px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .logo-footer img {
+      width: 150px;
+      height: 150px;
+      object-fit: contain;
+      animation: logoSpin 60s linear infinite reverse;
+      opacity: 0.15;
+      transition: opacity 0.4s ease;
+    }
+
+    .logo-footer img:hover {
+      opacity: 0.3;
+    }
+
+    @keyframes logoSpin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* --- Discount code reveal --- */
+    .discount-reveal {
+      margin-top: 20px;
+      padding: 16px 24px;
+      border: 1px solid rgba(201, 168, 76, 0.2);
+      background: rgba(201, 168, 76, 0.04);
+      display: inline-block;
+    }
+
+    .discount-reveal p {
+      font-size: 13px;
+      color: var(--text-mid);
+      line-height: 1.6;
+    }
+
+    .discount-reveal .code {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 18px;
+      font-weight: 500;
+      color: #c9a84c;
+      letter-spacing: 3px;
+      margin-top: 6px;
+      display: block;
+    }
+
     /* --- Direct ticket link (appears on every phase) --- */
     .direct-link {
       margin-top: 32px;
@@ -385,13 +435,13 @@
     }
 
     .direct-link a {
-      color: var(--text-dim);
+      color: #c9a84c;
       text-decoration: none;
       transition: color 0.3s ease;
     }
 
     .direct-link a:hover {
-      color: var(--text-mid);
+      color: #dfc06a;
     }
 
     /* --- Responsive --- */
@@ -461,12 +511,22 @@
         <p class="intention-echo" id="intentionEcho"></p>
         <p class="intention-code">Your reflection code: <span id="reflectionCode"></span></p>
       </div>
+      <div class="discount-reveal" id="discountBlock">
+        <p>Use this code at checkout for <span id="discountAmount">$5</span> off</p>
+        <span class="code" id="discountDisplay">INTENTION5</span>
+      </div>
+      <br><br>
       <a
         class="ticket-btn"
         id="ticketLink"
         href="https://humanitix.com/au/YOUR-EVENT-SLUG"
         target="_blank"
       >Get your ticket</a>
+    </div>
+
+    <!-- Logo -->
+    <div class="logo-footer">
+      <img src="VC_logo_transparent.png" alt="Voicecraft">
     </div>
 
   </div>
@@ -482,7 +542,10 @@
       // Replace with your Google Apps Script Web App URL (see instructions below)
       sheetsWebhook: 'https://script.google.com/macros/s/AKfycbzveC7DtgMbeR2i4jRTpZIP499kl3HBHt_UeYO9xkD8xvxrpj5aXsnXCvqVmWNnIHFR/exec',
       // The reflective prompt (change per event if desired)
-      prompt: 'What question are you sitting with right now?'
+      prompt: 'What question are you sitting with right now?',
+      // Discount code shown to people who complete the reflection
+      discountCode: 'INTENTION5',
+      discountAmount: '$5'
     };
 
     // =============================================
@@ -512,16 +575,21 @@
       const text = document.getElementById('intentionText').value.trim();
 
       if (skipped || !text) {
-        // Hide the echo block if they skipped
+        // Hide the echo block and discount if they skipped
         document.getElementById('echoBlock').style.display = 'none';
+        document.getElementById('discountBlock').style.display = 'none';
         document.getElementById('passageMessage').textContent = 'We look forward to having you in the room.';
       } else {
         // Show their intention back to them
-        document.getElementById('intentionEcho').textContent = '"' + text + '"';
+        document.getElementById('intentionEcho').textContent = '\u201C' + text + '\u201D';
 
         // Generate a short reflection code (for showing back at event)
         const code = generateCode();
         document.getElementById('reflectionCode').textContent = code;
+
+        // Show discount code
+        document.getElementById('discountDisplay').textContent = CONFIG.discountCode;
+        document.getElementById('discountAmount').textContent = CONFIG.discountAmount;
 
         // Send to Google Sheets
         storeIntention(text, code);
