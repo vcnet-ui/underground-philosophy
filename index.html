@@ -332,19 +332,6 @@
       border-bottom: 1px solid var(--border);
     }
 
-    .intention-code {
-      font-family: 'IBM Plex Sans', sans-serif;
-      font-size: 12px;
-      color: var(--text-dim);
-      letter-spacing: 2px;
-      margin-bottom: 40px;
-    }
-
-    .intention-code span {
-      color: var(--text-mid);
-      font-weight: 500;
-    }
-
     .ticket-btn {
       display: inline-block;
       font-family: 'IBM Plex Sans', sans-serif;
@@ -367,7 +354,7 @@
     }
 
     .ticket-btn::after {
-      content: '→';
+      content: '\2192';
       margin-left: 12px;
       transition: margin-left 0.3s ease;
     }
@@ -396,7 +383,7 @@
       to { transform: rotate(360deg); }
     }
 
-    /* --- Testimonial video --- */
+    /* --- Video embeds --- */
     .video-wrapper {
       margin-top: 28px;
       margin-bottom: 28px;
@@ -405,7 +392,7 @@
       max-width: 480px;
       margin-left: auto;
       margin-right: auto;
-      padding-top: 56.25%; /* 16:9 */
+      padding-top: 56.25%;
       border: 1px solid var(--border);
       overflow: hidden;
       opacity: 0;
@@ -439,6 +426,7 @@
     /* --- Discount code reveal --- */
     .discount-reveal {
       margin-top: 20px;
+      margin-bottom: 8px;
       padding: 16px 24px;
       border: 1px solid rgba(201, 168, 76, 0.2);
       background: rgba(201, 168, 76, 0.04);
@@ -516,13 +504,22 @@
       <p class="event-label">Underground Philosophy</p>
       <h1 class="event-title">Totalitarianism</h1>
       <p class="event-theme">An altered state of conversation about power, conformity, and the erosion of thought</p>
-      <p class="event-meta">Melbourne &nbsp;·&nbsp; March 2026 &nbsp;·&nbsp; 40 seats</p>
+      <p class="event-meta">Melbourne &nbsp;&middot;&nbsp; March 2026 &nbsp;&middot;&nbsp; 40 seats</p>
       <button class="enter-btn" onclick="goToReflection()">Enter</button>
-      <div class="direct-link"><a href="https://humanitix.com/au/YOUR-EVENT-SLUG" target="_blank">or go directly to tickets →</a></div>
+      <div class="direct-link"><a href="#" target="_blank">or go directly to tickets &rarr;</a></div>
     </div>
 
     <!-- PHASE 2: Reflection -->
     <div class="phase" id="phase-reflect">
+      <p class="video-label">Some thoughts on this inquiry</p>
+      <div class="video-wrapper">
+        <iframe
+          id="phase2Video"
+          src=""
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+        </iframe>
+      </div>
       <p class="reflection-prompt">What question are you sitting with right now?</p>
       <p class="reflection-context">There are no wrong answers. This just helps us understand what the room is bringing to the evening.</p>
       <textarea
@@ -537,7 +534,7 @@
         <button class="continue-btn" id="continueBtn" onclick="goToPassage()">Continue</button>
         <button class="skip-link" onclick="goToPassage(true)">skip this step</button>
       </div>
-      <div class="direct-link"><a href="https://humanitix.com/au/YOUR-EVENT-SLUG" target="_blank">or go directly to tickets →</a></div>
+      <div class="direct-link"><a href="#" target="_blank">or go directly to tickets &rarr;</a></div>
     </div>
 
     <!-- PHASE 3: Passage to tickets -->
@@ -552,9 +549,9 @@
       </div>
       <p class="video-label">Reflections on Voicecraft from Elder Les Spencer</p>
       <div class="video-wrapper">
-        <iframe 
-          src="https://www.youtube.com/embed/IMVY2zcVuUo?rel=0&modestbranding=1&showinfo=0&playsinline=1" 
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+        <iframe
+          src="https://www.youtube.com/embed/IMVY2zcVuUo?rel=0&modestbranding=1&showinfo=0&playsinline=1"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowfullscreen>
         </iframe>
       </div>
@@ -562,12 +559,12 @@
       <a
         class="ticket-btn"
         id="ticketLink"
-        href="https://humanitix.com/au/YOUR-EVENT-SLUG"
+        href="#"
         target="_blank"
       >Get your ticket</a>
     </div>
 
-    <!-- Logo -->
+    <!-- Logo (Phase 1 only) -->
     <div class="logo-footer" id="logoFooter">
       <img src="VC_logo_transparent.png" alt="Voicecraft">
     </div>
@@ -578,29 +575,30 @@
     // =============================================
     // CONFIGURATION — Edit these for each event
     // =============================================
-    const CONFIG = {
+    var CONFIG = {
       eventName: 'Totalitarianism',
       // Replace with your actual Humanitix event URL
       humanitixUrl: 'https://humanitix.com/au/YOUR-EVENT-SLUG',
-      // Replace with your Google Apps Script Web App URL (see instructions below)
+      // Google Apps Script Web App URL
       sheetsWebhook: 'https://script.google.com/macros/s/AKfycbzveC7DtgMbeR2i4jRTpZIP499kl3HBHt_UeYO9xkD8xvxrpj5aXsnXCvqVmWNnIHFR/exec',
-      // The reflective prompt (change per event if desired)
-      prompt: 'What question are you sitting with right now?',
       // Discount code shown to people who complete the reflection
       discountCode: 'INTENTION5',
-      discountAmount: '$5'
+      discountAmount: '$5',
+      // Phase 2 video — your thoughts on the topic (YouTube video ID only)
+      // e.g. for https://youtu.be/ABC123 use 'ABC123'
+      phase2VideoId: 'YOUR-VIDEO-ID'
     };
 
     // =============================================
     // PHASE TRANSITIONS
     // =============================================
     function transitionPhase(fromId, toId) {
-      const from = document.getElementById(fromId);
-      const to = document.getElementById(toId);
+      var from = document.getElementById(fromId);
+      var to = document.getElementById(toId);
 
       from.classList.add('exiting');
 
-      setTimeout(() => {
+      setTimeout(function() {
         from.classList.remove('active', 'exiting');
         to.classList.add('active');
       }, 600);
@@ -609,40 +607,34 @@
     function goToReflection() {
       // Hide logo (only shows on Phase 1)
       document.getElementById('logoFooter').style.display = 'none';
+
+      // Load Phase 2 video when entering (saves bandwidth on initial load)
+      document.getElementById('phase2Video').src =
+        'https://www.youtube.com/embed/' + CONFIG.phase2VideoId + '?rel=0&modestbranding=1&showinfo=0&playsinline=1';
+
       transitionPhase('phase-invite', 'phase-reflect');
-      // Focus the textarea after animation
-      setTimeout(() => {
+
+      setTimeout(function() {
         document.getElementById('intentionText').focus();
       }, 1400);
     }
 
-    function goToPassage(skipped = false) {
-      const text = document.getElementById('intentionText').value.trim();
+    function goToPassage(skipped) {
+      skipped = skipped || false;
+      var text = document.getElementById('intentionText').value.trim();
 
       if (skipped || !text) {
-        // Hide the echo block and discount if they skipped
         document.getElementById('echoBlock').style.display = 'none';
         document.getElementById('discountBlock').style.display = 'none';
         document.getElementById('passageMessage').textContent = 'We look forward to having you in the room.';
       } else {
-        // Show their intention back to them
         document.getElementById('intentionEcho').textContent = '\u201C' + text + '\u201D';
-
-        // Generate a short reflection code (for showing back at event)
-        const code = generateCode();
-        document.getElementById('reflectionCode').textContent = code;
-
-        // Show discount code
         document.getElementById('discountDisplay').textContent = CONFIG.discountCode;
         document.getElementById('discountAmount').textContent = CONFIG.discountAmount;
-
-        // Send to Google Sheets
-        storeIntention(text, code);
+        storeIntention(text);
       }
 
-      // Set the ticket link
       document.getElementById('ticketLink').href = CONFIG.humanitixUrl;
-
       transitionPhase('phase-reflect', 'phase-passage');
     }
 
@@ -650,10 +642,10 @@
     // INPUT HANDLING
     // =============================================
     function handleInput() {
-      const text = document.getElementById('intentionText').value;
-      const hint = document.getElementById('charHint');
-      const btn = document.getElementById('continueBtn');
-      const len = text.trim().length;
+      var text = document.getElementById('intentionText').value;
+      var hint = document.getElementById('charHint');
+      var btn = document.getElementById('continueBtn');
+      var len = text.trim().length;
 
       if (len > 0) {
         hint.textContent = len + ' / 500';
@@ -667,27 +659,14 @@
     }
 
     // =============================================
-    // REFLECTION CODE GENERATOR
-    // =============================================
-    function generateCode() {
-      // Creates a short memorable code like "EMBER-4827"
-      const words = ['EMBER', 'STONE', 'RIVER', 'DUSK', 'FLAME', 'STILL',
-                     'RIDGE', 'DEPTH', 'HAZE', 'ROOT', 'DRIFT', 'WAKE',
-                     'SHADE', 'PULSE', 'GRAIN', 'PYRE', 'MIST', 'VALE'];
-      const word = words[Math.floor(Math.random() * words.length)];
-      const num = Math.floor(1000 + Math.random() * 9000);
-      return word + '-' + num;
-    }
-
-    // =============================================
     // STORE INTENTION (Google Sheets via Apps Script)
     // =============================================
     //
-    // SETUP INSTRUCTIONS:
+    // SETUP:
     // 1. Create a Google Sheet with columns:
-    //    A: Timestamp | B: Event | C: Intention | D: Code
+    //    A: Timestamp | B: Event | C: Intention
     //
-    // 2. In Google Sheets, go to Extensions > Apps Script
+    // 2. In Google Sheets: Extensions > Apps Script
     //
     // 3. Paste this code:
     //
@@ -697,8 +676,7 @@
     //      sheet.appendRow([
     //        new Date(),
     //        data.event,
-    //        data.intention,
-    //        data.code
+    //        data.intention
     //      ]);
     //      return ContentService
     //        .createTextOutput(JSON.stringify({status: 'ok'}))
@@ -708,14 +686,9 @@
     // 4. Deploy > New Deployment > Web App
     //    - Execute as: Me
     //    - Who has access: Anyone
-    //    - Copy the URL and paste it into CONFIG.sheetsWebhook above
+    //    - Copy the URL into CONFIG.sheetsWebhook above
     //
-    // Before each event, you can read the Sheet to see what
-    // questions people are carrying. At the event, attendees
-    // can look up their code to see their original intention.
-    //
-    function storeIntention(text, code) {
-      // Fire and forget — don't block the UX
+    function storeIntention(text) {
       fetch(CONFIG.sheetsWebhook, {
         method: 'POST',
         mode: 'no-cors',
@@ -723,24 +696,21 @@
         body: JSON.stringify({
           event: CONFIG.eventName,
           intention: text,
-          code: code,
           timestamp: new Date().toISOString()
         })
-      }).catch(() => {
-        // Silent fail — the ticket flow shouldn't break
-        // if the storage doesn't work
+      }).catch(function() {
+        // Silent fail — ticket flow should never break
       });
     }
 
     // =============================================
-    // INITIALISE — set all links from CONFIG
+    // INITIALISE
     // =============================================
     (function init() {
-      // Update all direct ticket links
-      document.querySelectorAll('.direct-link a').forEach(function(el) {
-        el.href = CONFIG.humanitixUrl;
-      });
-      // Update the main ticket button
+      var links = document.querySelectorAll('.direct-link a');
+      for (var i = 0; i < links.length; i++) {
+        links[i].href = CONFIG.humanitixUrl;
+      }
       document.getElementById('ticketLink').href = CONFIG.humanitixUrl;
     })();
   </script>
