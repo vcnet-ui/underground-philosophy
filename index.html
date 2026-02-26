@@ -685,6 +685,10 @@
       skipped = skipped || false;
       var text = document.getElementById('intentionText').value.trim();
 
+      // Stop Phase 2 video
+      var phase2Vid = document.getElementById('phase2Video');
+      phase2Vid.src = '';
+
       if (skipped || !text) {
         document.getElementById('echoBlock').style.display = 'none';
         document.getElementById('discountBlock').style.display = 'none';
