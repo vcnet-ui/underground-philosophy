@@ -13,8 +13,8 @@
       --accent-glow: rgba(21, 35, 37, 0.4);
       --text: #d4cfc7;
       --text-bright: #ede9e2;
-      --text-dim: rgba(212, 207, 199, 0.35);
-      --text-mid: rgba(212, 207, 199, 0.55);
+      --text-dim: rgba(212, 207, 199, 0.5);
+      --text-mid: rgba(212, 207, 199, 0.7);
       --ember: #c45d3e;
       --border: rgba(212, 207, 199, 0.08);
     }
@@ -130,7 +130,7 @@
     /* --- Phase 1: Invitation --- */
     .event-label {
       font-family: 'IBM Plex Sans', sans-serif;
-      font-size: 12px;
+      font-size: 14px;
       font-weight: 500;
       letter-spacing: 4px;
       text-transform: uppercase;
@@ -140,7 +140,7 @@
 
     .event-title {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(36px, 7vw, 56px);
+      font-size: clamp(40px, 8vw, 64px);
       font-weight: 300;
       line-height: 1.15;
       color: var(--text-bright);
@@ -150,7 +150,7 @@
 
     .event-theme {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 22px;
+      font-size: 24px;
       font-weight: 300;
       font-style: italic;
       color: var(--text-mid);
@@ -158,7 +158,7 @@
     }
 
     .event-meta {
-      font-size: 15px;
+      font-size: 16px;
       color: var(--text-dim);
       margin-bottom: 48px;
       line-height: 1.7;
@@ -166,7 +166,7 @@
 
     .enter-btn {
       font-family: 'IBM Plex Sans', sans-serif;
-      font-size: 13px;
+      font-size: 15px;
       font-weight: 500;
       letter-spacing: 3px;
       text-transform: uppercase;
@@ -204,7 +204,7 @@
     /* --- Phase 2: Reflection --- */
     .reflection-prompt {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(24px, 4.5vw, 34px);
+      font-size: clamp(26px, 5vw, 38px);
       font-weight: 300;
       font-style: italic;
       color: var(--text-bright);
@@ -213,7 +213,7 @@
     }
 
     .reflection-context {
-      font-size: 15px;
+      font-size: 17px;
       color: var(--text-dim);
       margin-bottom: 36px;
       line-height: 1.6;
@@ -227,7 +227,7 @@
       border-radius: 2px;
       color: var(--text-bright);
       font-family: 'Cormorant Garamond', serif;
-      font-size: 20px;
+      font-size: 22px;
       font-weight: 300;
       font-style: italic;
       padding: 24px;
@@ -247,7 +247,7 @@
     }
 
     .char-hint {
-      font-size: 12px;
+      font-size: 13px;
       color: var(--text-dim);
       margin-top: 10px;
       text-align: right;
@@ -268,7 +268,7 @@
 
     .continue-btn {
       font-family: 'IBM Plex Sans', sans-serif;
-      font-size: 13px;
+      font-size: 15px;
       font-weight: 500;
       letter-spacing: 3px;
       text-transform: uppercase;
@@ -294,7 +294,7 @@
     }
 
     .skip-link {
-      font-size: 13px;
+      font-size: 15px;
       color: var(--text-dim);
       text-decoration: none;
       cursor: pointer;
@@ -311,7 +311,7 @@
     /* --- Phase 3: Passage --- */
     .passage-message {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(22px, 4vw, 30px);
+      font-size: clamp(24px, 4.5vw, 34px);
       font-weight: 300;
       color: var(--text-bright);
       line-height: 1.5;
@@ -320,7 +320,7 @@
 
     .intention-echo {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 20px;
+      font-size: 22px;
       font-weight: 300;
       font-style: italic;
       color: var(--text-mid);
@@ -335,7 +335,7 @@
     .ticket-btn {
       display: inline-block;
       font-family: 'IBM Plex Sans', sans-serif;
-      font-size: 14px;
+      font-size: 16px;
       font-weight: 500;
       letter-spacing: 3px;
       text-transform: uppercase;
@@ -410,7 +410,7 @@
 
     .video-label {
       font-family: 'IBM Plex Sans', sans-serif;
-      font-size: 11px;
+      font-size: 13px;
       letter-spacing: 2px;
       text-transform: uppercase;
       color: var(--text-dim);
@@ -434,14 +434,14 @@
     }
 
     .discount-reveal p {
-      font-size: 13px;
+      font-size: 15px;
       color: var(--text-mid);
       line-height: 1.6;
     }
 
     .discount-reveal .code {
       font-family: 'IBM Plex Sans', sans-serif;
-      font-size: 18px;
+      font-size: 20px;
       font-weight: 500;
       color: #c9a84c;
       letter-spacing: 3px;
@@ -454,7 +454,7 @@
       margin-top: 32px;
       text-align: center;
       font-family: 'IBM Plex Sans', sans-serif;
-      font-size: 12px;
+      font-size: 14px;
       letter-spacing: 0.5px;
     }
 
@@ -466,6 +466,56 @@
 
     .direct-link a:hover {
       color: #dfc06a;
+    }
+
+    /* --- Event details block --- */
+    .event-details {
+      margin-bottom: 40px;
+      padding: 28px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      max-width: 320px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .event-venue {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      font-weight: 400;
+      color: var(--text-bright);
+      margin-bottom: 20px;
+    }
+
+    .event-schedule {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .event-schedule li {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 14px;
+      color: var(--text-mid);
+      padding: 5px 0;
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .event-schedule li .time {
+      color: var(--text-dim);
+      min-width: 70px;
+      text-align: right;
+    }
+
+    .event-schedule li .desc {
+      min-width: 160px;
+      text-align: left;
+    }
+
+    .event-schedule li:last-child .desc {
+      font-style: italic;
     }
 
     /* --- Responsive --- */
@@ -504,7 +554,15 @@
       <p class="event-label">Underground Philosophy</p>
       <h1 class="event-title">Totalitarianism</h1>
       <p class="event-theme">An inquiry into power, conformity, and the erosion of thought</p>
-      <p class="event-meta">Melbourne &nbsp;&middot;&nbsp; March 17, 2026 &nbsp;&middot;&nbsp; 35 seats</p>
+      <p class="event-meta">Caz Reitop's, Collingwood, Melbourne &nbsp;&middot;&nbsp; 17th March 2026 &nbsp;&middot;&nbsp; 35 seats</p>
+      <div class="event-details">
+        <ul class="event-schedule">
+          <li><span class="time">6.00pm</span><span class="desc">Doors</span></li>
+          <li><span class="time">6.30pm</span><span class="desc">Show start</span></li>
+          <li><span class="time">8.30pm</span><span class="desc">Show end</span></li>
+          <li><span class="time">8.30pm</span><span class="desc">Optional Speakeasy</span></li>
+        </ul>
+      </div>
       <button class="enter-btn" onclick="goToReflection()">Enter</button>
       <div class="direct-link"><a href="#" target="_blank">or go directly to tickets &rarr;</a></div>
     </div>
