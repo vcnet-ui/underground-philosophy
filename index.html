@@ -389,7 +389,6 @@
       margin-bottom: 28px;
       position: relative;
       width: 100%;
-      max-width: 480px;
       margin-left: auto;
       margin-right: auto;
       padding-top: 56.25%;
@@ -425,28 +424,24 @@
 
     /* --- Discount code reveal --- */
     .discount-reveal {
-      margin-top: 20px;
-      margin-bottom: 8px;
-      padding: 16px 24px;
-      border: 1px solid rgba(201, 168, 76, 0.2);
-      background: rgba(201, 168, 76, 0.04);
-      display: inline-block;
+      margin-top: 16px;
+      padding: 0;
+      border: none;
+      background: none;
     }
 
     .discount-reveal p {
-      font-size: 17px;
-      color: var(--text-mid);
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 14px;
+      color: var(--text-dim);
       line-height: 1.6;
     }
 
     .discount-reveal .code {
       font-family: 'IBM Plex Sans', sans-serif;
-      font-size: 22px;
       font-weight: 500;
       color: #c9a84c;
-      letter-spacing: 3px;
-      margin-top: 6px;
-      display: block;
+      letter-spacing: 2px;
     }
 
     /* --- Direct ticket link (appears on every phase) --- */
@@ -470,11 +465,11 @@
 
     /* --- Event details block --- */
     .event-details {
+      margin-top: 56px;
       margin-bottom: 40px;
-      padding: 28px 0;
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      max-width: 320px;
+      padding: 36px 0;
+      border-top: 1px solid rgba(201, 168, 76, 0.15);
+      max-width: 480px;
       margin-left: auto;
       margin-right: auto;
     }
@@ -600,17 +595,17 @@
       <div id="echoBlock">
         <p class="intention-echo" id="intentionEcho"></p>
       </div>
-      <div class="discount-reveal" id="discountBlock">
-        <p>Use this code at checkout for <span id="discountAmount">$5</span> off</p>
-        <span class="code" id="discountDisplay">INTENTION5</span>
+      <div style="margin-top: 36px;">
+        <a
+          class="ticket-btn"
+          id="ticketLink"
+          href="#"
+          target="_blank"
+        >Get your ticket</a>
+        <div class="discount-reveal" id="discountBlock" style="display: block; margin-top: 20px;">
+          <p>Thanks for sharing. Use code <span class="code" id="discountDisplay" style="display: inline; font-size: 16px;">INTENTION5</span> at checkout for <span id="discountAmount">$5</span> off</p>
+        </div>
       </div>
-      <br>
-      <a
-        class="ticket-btn"
-        id="ticketLink"
-        href="#"
-        target="_blank"
-      >Get your ticket</a>
       <div class="event-details">
         <p class="event-venue">Caz Reitop's, Collingwood, Melbourne</p>
         <p class="event-date-recap">Tuesday 17th March 2026</p>
