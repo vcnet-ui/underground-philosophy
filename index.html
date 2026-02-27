@@ -396,6 +396,7 @@
       overflow: hidden;
       opacity: 0;
       animation: wygVideoIn 1s ease 0.8s forwards;
+      background: var(--surface);
     }
 
     .video-wrapper iframe {
@@ -567,7 +568,7 @@
       <div class="video-wrapper">
         <iframe
           id="phase2Video"
-          src=""
+          src="about:blank"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowfullscreen>
         </iframe>
@@ -663,6 +664,8 @@
       setTimeout(function() {
         from.classList.remove('active', 'exiting');
         to.classList.add('active');
+        // Scroll to top of container for clean landing
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       }, 600);
     }
 
@@ -670,15 +673,14 @@
       // Hide logo (only shows on Phase 1)
       document.getElementById('logoFooter').style.display = 'none';
 
-      // Load Phase 2 video when entering (saves bandwidth on initial load)
+      // Load Phase 2 video BEFORE transitioning so layout is stable
       document.getElementById('phase2Video').src =
         'https://www.youtube.com/embed/' + CONFIG.phase2VideoId + '?rel=0&modestbranding=1&showinfo=0&playsinline=1';
 
-      transitionPhase('phase-invite', 'phase-reflect');
-
+      // Small delay to let iframe begin loading, then transition
       setTimeout(function() {
-        document.getElementById('intentionText').focus();
-      }, 1400);
+        transitionPhase('phase-invite', 'phase-reflect');
+      }, 100);
     }
 
     function goToPassage(skipped) {
