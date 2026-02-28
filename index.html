@@ -640,17 +640,32 @@
     // =============================================
     var CONFIG = {
       eventName: 'Totalitarianism',
-      // Replace with your actual Humanitix event URL
+      // Replace with your actual Humanitix event URL (no trailing slash)
       humanitixUrl: 'https://events.humanitix.com/underground-philosophy-totalitarianism',
       // Google Apps Script Web App URL
       sheetsWebhook: 'https://script.google.com/macros/s/AKfycbzveC7DtgMbeR2i4jRTpZIP499kl3HBHt_UeYO9xkD8xvxrpj5aXsnXCvqVmWNnIHFR/exec',
       // Discount code shown to people who complete the reflection
       discountCode: 'INTENTION5',
       discountAmount: '$5',
-      // Phase 2 video — your thoughts on the topic (YouTube video ID only)
-      // e.g. for https://youtu.be/ABC123 use 'ABC123'
-      phase2VideoId: 'mquVsh2gDNI'
+      // A/B TEST: Two video variants for Phase 2
+      // Variant A
+      videoA: {
+        id: 'tmQ62hm6TCI',
+        label: 'first one / more of a warning',
+        utm: 'warning'
+      },
+      // Variant B
+      videoB: {
+        id: 'mquVsh2gDNI',
+        label: 'newer, softer message',
+        utm: 'softer'
+      }
     };
+
+    // =============================================
+    // A/B TEST — assign variant on page load
+    // =============================================
+    var activeVariant = Math.random() < 0.5 ? CONFIG.videoA : CONFIG.videoB;
 
     // =============================================
     // PHASE TRANSITIONS
@@ -664,20 +679,17 @@
       setTimeout(function() {
         from.classList.remove('active', 'exiting');
         to.classList.add('active');
-        // Scroll to top of container for clean landing
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }, 600);
     }
 
     function goToReflection() {
-      // Hide logo (only shows on Phase 1)
       document.getElementById('logoFooter').style.display = 'none';
 
-      // Load Phase 2 video BEFORE transitioning so layout is stable
+      // Load the assigned variant video
       document.getElementById('phase2Video').src =
-        'https://www.youtube.com/embed/' + CONFIG.phase2VideoId + '?rel=0&modestbranding=1&showinfo=0&playsinline=1';
+        'https://www.youtube.com/embed/' + activeVariant.id + '?rel=0&modestbranding=1&showinfo=0&playsinline=1';
 
-      // Small delay to let iframe begin loading, then transition
       setTimeout(function() {
         transitionPhase('phase-invite', 'phase-reflect');
       }, 100);
@@ -688,8 +700,7 @@
       var text = document.getElementById('intentionText').value.trim();
 
       // Stop Phase 2 video
-      var phase2Vid = document.getElementById('phase2Video');
-      phase2Vid.src = '';
+      document.getElementById('phase2Video').src = '';
 
       if (skipped || !text) {
         document.getElementById('echoBlock').style.display = 'none';
@@ -702,7 +713,13 @@
         storeIntention(text);
       }
 
-      document.getElementById('ticketLink').href = CONFIG.humanitixUrl;
+      // Append UTM params with variant info to Humanitix URL
+      var ticketUrl = CONFIG.humanitixUrl
+        + '?utm_source=underground_flow'
+        + '&utm_medium=web'
+        + '&utm_content=video_' + activeVariant.utm;
+
+      document.getElementById('ticketLink').href = ticketUrl;
       transitionPhase('phase-reflect', 'phase-passage');
     }
 
@@ -730,13 +747,13 @@
     // STORE INTENTION (Google Sheets via Apps Script)
     // =============================================
     //
-    // SETUP:
+    // UPDATED SETUP:
     // 1. Create a Google Sheet with columns:
-    //    A: Timestamp | B: Event | C: Intention
+    //    A: Timestamp | B: Event | C: Intention | D: Video Variant
     //
     // 2. In Google Sheets: Extensions > Apps Script
     //
-    // 3. Paste this code:
+    // 3. Paste this code (REPLACES your previous version):
     //
     //    function doPost(e) {
     //      var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
@@ -744,17 +761,16 @@
     //      sheet.appendRow([
     //        new Date(),
     //        data.event,
-    //        data.intention
+    //        data.intention,
+    //        data.variant
     //      ]);
     //      return ContentService
     //        .createTextOutput(JSON.stringify({status: 'ok'}))
     //        .setMimeType(ContentService.MimeType.JSON);
     //    }
     //
-    // 4. Deploy > New Deployment > Web App
-    //    - Execute as: Me
-    //    - Who has access: Anyone
-    //    - Copy the URL into CONFIG.sheetsWebhook above
+    // 4. Deploy > Manage deployments > Edit > New version > Deploy
+    //    (You must create a new version for changes to take effect)
     //
     function storeIntention(text) {
       fetch(CONFIG.sheetsWebhook, {
@@ -764,10 +780,11 @@
         body: JSON.stringify({
           event: CONFIG.eventName,
           intention: text,
+          variant: activeVariant.label,
           timestamp: new Date().toISOString()
         })
       }).catch(function() {
-        // Silent fail — ticket flow should never break
+        // Silent fail
       });
     }
 
@@ -775,11 +792,17 @@
     // INITIALISE
     // =============================================
     (function init() {
+      // Build UTM-tagged URL for direct ticket links too
+      var ticketUrl = CONFIG.humanitixUrl
+        + '?utm_source=underground_flow'
+        + '&utm_medium=web'
+        + '&utm_content=video_' + activeVariant.utm;
+
       var links = document.querySelectorAll('.direct-link a');
       for (var i = 0; i < links.length; i++) {
-        links[i].href = CONFIG.humanitixUrl;
+        links[i].href = ticketUrl;
       }
-      document.getElementById('ticketLink').href = CONFIG.humanitixUrl;
+      document.getElementById('ticketLink').href = ticketUrl;
     })();
   </script>
 
