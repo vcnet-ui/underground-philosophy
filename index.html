@@ -829,6 +829,26 @@
       }
       document.getElementById('ticketLink').href = ticketUrl;
     })();
+    // =============================================
+    // IFRAME AUTO-RESIZE — tells parent (Squarespace) how tall we are
+    // =============================================
+    function notifyParentHeight() {
+      var height = document.body.scrollHeight;
+      window.parent.postMessage({ type: 'resize', height: height }, '*');
+    }
+
+    // Send height on load, after transitions, and on resize
+    window.addEventListener('load', function() {
+      setTimeout(notifyParentHeight, 100);
+    });
+    window.addEventListener('resize', notifyParentHeight);
+
+    // Also notify after phase transitions settle
+    var origTransition = transitionPhase;
+    transitionPhase = function(fromId, toId) {
+      origTransition(fromId, toId);
+      setTimeout(notifyParentHeight, 1000);
+    };
   </script>
 
 </body>
