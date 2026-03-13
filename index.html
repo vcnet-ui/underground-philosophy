@@ -672,25 +672,9 @@
       // Discount code shown to people who complete the reflection
       discountCode: 'INTENTION5',
       discountAmount: '$5',
-      // A/B TEST: Two video variants for Phase 2
-      // Variant A
-      videoA: {
-        id: 'tmQ62hm6TCI',
-        label: 'first one / more of a warning',
-        utm: 'warning'
-      },
-      // Variant B
-      videoB: {
-        id: 'mquVsh2gDNI',
-        label: 'newer, softer message',
-        utm: 'softer'
-      }
+      // Phase 2 video (YouTube video ID only)
+      phase2VideoId: 'mquVsh2gDNI'
     };
-
-    // =============================================
-    // A/B TEST — assign variant on page load
-    // =============================================
-    var activeVariant = Math.random() < 0.5 ? CONFIG.videoA : CONFIG.videoB;
 
     // =============================================
     // PHASE TRANSITIONS
@@ -711,9 +695,9 @@
     function goToReflection() {
       document.getElementById('logoFooter').style.display = 'none';
 
-      // Load the assigned variant video
+      // Load Phase 2 video
       document.getElementById('phase2Video').src =
-        'https://www.youtube.com/embed/' + activeVariant.id + '?rel=0&modestbranding=1&showinfo=0&playsinline=1';
+        'https://www.youtube.com/embed/' + CONFIG.phase2VideoId + '?rel=0&modestbranding=1&showinfo=0&playsinline=1';
 
       setTimeout(function() {
         transitionPhase('phase-invite', 'phase-reflect');
@@ -738,11 +722,9 @@
         storeIntention(text);
       }
 
-      // Append UTM params with variant info to Humanitix URL
       var ticketUrl = CONFIG.humanitixUrl
         + '?utm_source=underground_flow'
-        + '&utm_medium=web'
-        + '&utm_content=video_' + activeVariant.utm;
+        + '&utm_medium=web';
 
       document.getElementById('ticketLink').href = ticketUrl;
       transitionPhase('phase-reflect', 'phase-passage');
@@ -805,7 +787,6 @@
         body: JSON.stringify({
           event: CONFIG.eventName,
           intention: text,
-          variant: activeVariant.label,
           timestamp: new Date().toISOString()
         })
       }).catch(function() {
@@ -820,8 +801,7 @@
       // Build UTM-tagged URL for direct ticket links too
       var ticketUrl = CONFIG.humanitixUrl
         + '?utm_source=underground_flow'
-        + '&utm_medium=web'
-        + '&utm_content=video_' + activeVariant.utm;
+        + '&utm_medium=web';
 
       var links = document.querySelectorAll('.direct-link a');
       for (var i = 0; i < links.length; i++) {
